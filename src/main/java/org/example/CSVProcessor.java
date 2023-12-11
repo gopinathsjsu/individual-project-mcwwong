@@ -16,7 +16,6 @@ public class CSVProcessor{
 
             String[] record;
             while ((record = reader.readNext()) != null) {
-                // Assuming the CSV format is cardNumber,expirationDate,cardHolderName
                 String cardNumber = record[0];
                 String expirationDate = record[1];
                 String cardHolderName = record[2];

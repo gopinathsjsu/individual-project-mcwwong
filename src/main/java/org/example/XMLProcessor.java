@@ -17,11 +17,9 @@ public class XMLProcessor{
     public static List<CreditCard> readCardsFromFile(String filename) throws Exception {
         List<CreditCard> cards = new ArrayList<>();
 
-        // Create a DocumentBuilder
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
-        // Parse the XML file
         Document document = builder.parse(new File(filename));
         NodeList cardNodes = document.getElementsByTagName("CARD");
 
@@ -31,7 +29,6 @@ public class XMLProcessor{
             String expirationDate = cardElement.getElementsByTagName("EXPIRATION_DATE").item(0).getTextContent();
             String cardHolderName = cardElement.getElementsByTagName("CARD_HOLDER_NAME").item(0).getTextContent();
 
-            // Determine the card type and handle invalid card numbers
             String errorMessage = Processor.determineErrorMessage(cardNumber);
             CreditCard card;
             if (!errorMessage.isEmpty()) {
@@ -40,7 +37,6 @@ public class XMLProcessor{
                 card = Processor.getCreditCard(cardNumber, expirationDate, cardHolderName);
             }
 
-            // Add this null check
             if (card != null) {
                 cards.add(card);
             }
@@ -50,11 +46,9 @@ public class XMLProcessor{
     }
 
     public static void writeCardsToFile(List<CreditCard> cards, String filename) throws Exception {
-        // Create a DocumentBuilder
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
-        // Create a new XML document
         Document document = builder.newDocument();
         Element rootElement = document.createElement("CARDS");
         document.appendChild(rootElement);
@@ -70,7 +64,6 @@ public class XMLProcessor{
             if (card instanceof InvalidCreditCard) {
                 cardTypeElement.setTextContent(((InvalidCreditCard) card).getErrorMessage());
             } else {
-                // Set the card type based on the class name or a specific method
                 cardTypeElement.setTextContent(Processor.getCardType(card));
             }
             cardElement.appendChild(cardTypeElement);
@@ -78,13 +71,11 @@ public class XMLProcessor{
             rootElement.appendChild(cardElement);
         }
 
-        // Configure formatting for proper indentation
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty("indent", "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
-        // Write the XML document to a file
         DOMSource source = new DOMSource(document);
         StreamResult result = new StreamResult(new File(filename));
         transformer.transform(source, result);

@@ -59,8 +59,6 @@ public class Processor {
     }
 
     public static boolean isPossibleCardNumber(String cardNumber) {
-        // Example logic: Check if the card number starts with certain digits
-        // and has a valid length. Adjust this logic according to your specific rules.
         if (cardNumber.startsWith("4") && (cardNumber.length() == 13 || cardNumber.length() == 16)) {
             return true; // Visa
         }

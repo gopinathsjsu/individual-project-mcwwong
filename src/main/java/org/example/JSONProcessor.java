@@ -21,7 +21,6 @@ public class JSONProcessor{
             String expirationDate = cardObject.optString("expirationDate", null);
             String cardHolderName = cardObject.optString("cardHolderName", null);
 
-            // Inside the readCardsFromFile method...
             String errorMessage = Processor.determineErrorMessage(cardNumber);
             CreditCard card;
             if (errorMessage.isEmpty()) {
